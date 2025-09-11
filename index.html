@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaurav Jain - PortFolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a;
+            color: #d1d5db;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .card {
+            background-color: #2b2b2b;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #f97316; /* Orange 500 */
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #ea580c; /* Orange 600 */
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="bg-[#1a1a1a] text-gray-200">
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, onSnapshot, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+        
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC0THL3rQUy2BalrI4cLYHJbbaDKvYq24g",
+            authDomain: "protfolio-9e108.firebaseapp.com",
+            projectId: "protfolio-9e108",
+            storageBucket: "protfolio-9e108.firebasestorage.app",
+            messagingSenderId: "676400124635",
+            appId: "1:676400124635:web:24384cad2b1887514c72fe",
+            measurementId: "G-MKYTYJ1GJJ"
+        };
+
+        const appId = firebaseConfig.appId;
+        const PORTFOLIO_ID = "main"; // A static ID for the single portfolio
+
+        let app, db;
+
+        const aboutMeText = document.getElementById('about-me');
+        const projectsList = document.getElementById('projects-list');
+        const heroName = document.getElementById('name-heading');
+        const downloadResumeBtn = document.getElementById('download-resume-btn');
+        const profilePic = document.getElementById('profile-pic');
+        const skillsList = document.getElementById('skills-list');
+
+        const initFirebase = () => {
+            try {
+                if (!firebaseConfig.apiKey || !firebaseConfig.projectId || !firebaseConfig.appId) {
+                    console.error("Firebase is not fully configured.");
+                    return;
+                }
+                
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                loadPortfolioContent();
+                setupProjectsListener();
+            } catch (error) {
+                console.error("Firebase initialization failed:", error);
+            }
+        };
+
+        const loadPortfolioContent = () => {
+            if (!db) return;
+
+            const docRef = doc(db, `portfolios/${PORTFOLIO_ID}`);
+            getDoc(docRef).then((docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    heroName.textContent = data.name || "Full Stack Developer";
+                    aboutMeText.textContent = data.bio || "Hello! I'm Gaurav Jain...";
+                    downloadResumeBtn.href = data.resumeUrl || "#";
+                    profilePic.src = data.profilePicUrl || "https://placehold.co/300x300/333/d1d5db?text=Gaurav";
+                    
+                    if (data.skills) {
+                        skillsList.innerHTML = '';
+                        const skillArray = JSON.parse(data.skills);
+                        skillArray.forEach(skill => {
+                            const skillItem = document.createElement('div');
+                            skillItem.className = 'bg-gray-800 p-6 rounded-lg text-center';
+                            skillItem.innerHTML = `<h4 class="font-bold text-xl mb-1">${skill.name}</h4><p class="text-gray-400 text-sm">${skill.experience}</p>`;
+                            skillsList.appendChild(skillItem);
+                        });
+                    }
+                }
+            }).catch(error => {
+                console.error("Error loading portfolio data:", error);
+            });
+        };
+
+        const setupProjectsListener = () => {
+            if (!db) return;
+            const projectsRef = collection(db, `portfolios/${PORTFOLIO_ID}/projects`);
+            const q = query(projectsRef, orderBy("createdAt", "desc"));
+            
+            onSnapshot(q, (snapshot) => {
+                const projects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                displayProjects(projects);
+            }, (error) => {
+                console.error("Failed to fetch projects:", error);
+            });
+        };
+
+        const displayProjects = (projects) => {
+            projectsList.innerHTML = '';
+            if (projects.length === 0) {
+                projectsList.innerHTML = '<p class="text-center text-gray-500 col-span-1 lg:col-span-2">No projects to display.</p>';
+                return;
+            }
+            projects.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'card p-8 flex flex-col justify-between';
+                card.innerHTML = `
+                    <div>
+                        <h3 class="text-3xl font-bold mb-2 text-gray-50">${project.title}</h3>
+                        <p class="text-gray-400 mb-4">${project.description}</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${JSON.parse(project.technologies).map(tech => `<span class="bg-[#333] text-gray-400 px-3 py-1 text-sm rounded-full">${tech}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <a href="${project.liveUrl}" target="_blank" class="text-white hover:underline font-semibold transition-colors">Live Demo &rarr;</a>
+                        <a href="${project.githubUrl}" target="_blank" class="text-white hover:underline font-semibold transition-colors">GitHub &rarr;</a>
+                    </div>
+                `;
+                projectsList.appendChild(card);
+            });
+        };
+
+        window.onload = () => {
+            initFirebase();
+        };
+    </script>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 min-h-screen">
+        <div class="bg-[#1a1a1a] p-8 flex flex-col justify-center items-center text-center md:items-start md:text-left">
+            <div class="max-w-xl md:pl-20">
+                <h1 class="text-5xl md:text-7xl font-bold text-gray-50 mb-4 tracking-tight">PortFolio</h1>
+                <p class="text-lg md:text-2xl font-normal text-gray-400 mb-8">
+                    Figma PortFolio Template
+                </p>
+            </div>
+        </div>
+        
+        <div class="bg-[#2b2b2b] p-8 md:p-12 overflow-y-auto">
+            <header class="flex justify-end items-center mb-16">
+                <nav class="flex space-x-6 text-gray-400 font-medium">
+                    <a href="#home" class="hover:text-white transition-colors">Home</a>
+                    <a href="#about" class="hover:text-white transition-colors">About</a>
+                    <a href="#work" class="hover:text-white transition-colors">Work</a>
+                </nav>
+                <a href="https://github.com" target="_blank" class="ml-6 text-gray-400 hover:text-white transition-colors text-2xl">
+                    <i class="fab fa-github"></i>
+                </a>
+            </header>
+
+            <section id="home" class="mb-20">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                    <div class="col-span-2">
+                        <p class="text-gray-400 mb-2">Hello, I'm Gaurav,</p>
+                        <h2 id="name-heading" class="text-5xl md:text-6xl font-extrabold text-gray-50 leading-tight mb-4">
+                            Full Stack Developer
+                        </h2>
+                        <a id="download-resume-btn" href="#" target="_blank" class="text-orange-500 hover:text-orange-400 font-semibold transition-colors border-b-2 border-orange-500">Contact Me</a>
+                    </div>
+                    <div class="col-span-1 flex justify-center lg:justify-end">
+                        <img id="profile-pic" src="https://placehold.co/300x300/333/d1d5db?text=Gaurav" class="w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-gray-700 object-cover" alt="Gaurav Jain">
+                    </div>
+                </div>
+            </section>
+            
+            <section id="about" class="mb-20">
+                <h3 class="text-3xl font-bold text-gray-50 mb-4">about</h3>
+                <div class="h-1 w-24 bg-gray-600 mb-8"></div>
+                <p id="about-me" class="text-gray-400 leading-relaxed mb-12">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Amet vulputate tristique quam felis id phasellus dui orci vulputate consequat nulla proin. Id sit scelerisque neque, proin bibendum diam.
+                </p>
+                
+                <div id="skills-list" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    </div>
+            </section>
+
+            <section id="work">
+                <h3 class="text-3xl font-bold text-gray-50 mb-4">My Projects</h3>
+                <div id="projects-list" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>
