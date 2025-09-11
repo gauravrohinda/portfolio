@@ -147,6 +147,7 @@
                         <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
                             <li>Designed and built custom websites for small businesses and clients.</li>
                             <li>Managed client communication and project timelines.</li>
+                        <li>Managed client communication and project timelines.</li>
                         </ul>
                     </div>
                 </div>
@@ -241,7 +242,7 @@
                         <p class="text-gray-600 mb-6">I'm currently open to new opportunities. Feel free to contact me for collaborations or inquiries.</p>
                         <div class="space-y-2">
                             <p class="font-medium text-sm">Email</p>
-                            <a href="mailto:your.email@example.com" class="text-sm text-blue-500 hover:underline">gauravrohinda0@gmail.com</a>
+                            <a href="mailto:gauravrohinda0@gmail.com" class="text-sm text-blue-500 hover:underline">gauravrohinda0@gmail.com</a>
                         </div>
                     </div>
                     
@@ -260,8 +261,8 @@
                         </div>
                         <button type="submit" class="btn-primary text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Send Message</button>
                     </form>
-                    <div id="status-message" class="mt-4 text-sm font-medium"></div>
                 </div>
+                <div id="status-message" class="mt-4 text-sm font-medium"></div>
             </section>
         </div>
     </div>
@@ -296,7 +297,6 @@
             statusMessage.className = 'mt-4 text-sm font-medium text-blue-500';
 
             try {
-                // Add a new document to the "contacts" collection
                 await db.collection("contacts").add({
                     name: name,
                     email: email,
