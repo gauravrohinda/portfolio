@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gaurav Jain - PortFolio</title>
+    <title>Gaurav Jain - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,229 +12,284 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1a1a1a;
-            color: #d1d5db;
+            background-color: #f7f7f7;
+            color: #1a1a1a;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            min-height: 100vh;
         }
-
-        .card {
-            background-color: #2b2b2b;
-            border-radius: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn {
-            padding: 0.75rem 2rem;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        .btn-primary {
-            background-color: #f97316; /* Orange 500 */
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #ea580c; /* Orange 600 */
-        }
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            z-index: 1000;
+        .left-panel {
+            background-color: #ffffff;
+            color: #1a1a1a;
+            padding: 4rem;
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            justify-content: center;
+            height: 100vh;
+            display: flex;
             align-items: center;
+            justify-content: center;
+        }
+        .right-panel {
+            background-color: #ffffff;
+            padding: 4rem;
+            overflow-y: auto;
+        }
+        .section-divider {
+            border: none;
+            height: 1px;
+            background-color: #e5e5e5;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .about-section {
+            display: flex;
+            gap: 2rem;
+        }
+        .project-card {
+            border: 1px solid #e5e5e5;
+            padding: 1.5rem;
+        }
+        .social-icons a {
+            color: #1a1a1a;
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e5e5e5;
+            background-color: transparent;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: #a0aec0;
         }
     </style>
 </head>
-<body class="bg-[#1a1a1a] text-gray-200">
+<body class="bg-gray-100 text-gray-900">
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, onSnapshot, collection, query, orderBy } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-        import { setLogLevel } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
-        
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyC0THL3rQUy2BalrI4cLYHJbbaDKvYq24g",
-            authDomain: "protfolio-9e108.firebaseapp.com",
-            projectId: "protfolio-9e108",
-            storageBucket: "protfolio-9e108.firebasestorage.app",
-            messagingSenderId: "676400124635",
-            appId: "1:676400124635:web:24384cad2b1887514c72fe",
-            measurementId: "G-MKYTYJ1GJJ"
-        };
-
-        const appId = firebaseConfig.appId;
-        const PORTFOLIO_ID = "main"; // A static ID for the single portfolio
-
-        let app, db;
-
-        const aboutMeText = document.getElementById('about-me');
-        const projectsList = document.getElementById('projects-list');
-        const heroName = document.getElementById('name-heading');
-        const downloadResumeBtn = document.getElementById('download-resume-btn');
-        const profilePic = document.getElementById('profile-pic');
-        const skillsList = document.getElementById('skills-list');
-
-        const initFirebase = () => {
-            try {
-                if (!firebaseConfig.apiKey || !firebaseConfig.projectId || !firebaseConfig.appId) {
-                    console.error("Firebase is not fully configured.");
-                    return;
-                }
-                
-                app = initializeApp(firebaseConfig);
-                db = getFirestore(app);
-                loadPortfolioContent();
-                setupProjectsListener();
-            } catch (error) {
-                console.error("Firebase initialization failed:", error);
-            }
-        };
-
-        const loadPortfolioContent = () => {
-            if (!db) return;
-
-            const docRef = doc(db, `portfolios/${PORTFOLIO_ID}`);
-            getDoc(docRef).then((docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    heroName.textContent = data.name || "Full Stack Developer";
-                    aboutMeText.textContent = data.bio || "Hello! I'm Gaurav Jain...";
-                    downloadResumeBtn.href = data.resumeUrl || "#";
-                    profilePic.src = data.profilePicUrl || "https://placehold.co/300x300/333/d1d5db?text=Gaurav";
-                    
-                    if (data.skills) {
-                        skillsList.innerHTML = '';
-                        const skillArray = JSON.parse(data.skills);
-                        skillArray.forEach(skill => {
-                            const skillItem = document.createElement('div');
-                            skillItem.className = 'bg-gray-800 p-6 rounded-lg text-center';
-                            skillItem.innerHTML = `<h4 class="font-bold text-xl mb-1">${skill.name}</h4><p class="text-gray-400 text-sm">${skill.experience}</p>`;
-                            skillsList.appendChild(skillItem);
-                        });
-                    }
-                }
-            }).catch(error => {
-                console.error("Error loading portfolio data:", error);
-            });
-        };
-
-        const setupProjectsListener = () => {
-            if (!db) return;
-            const projectsRef = collection(db, `portfolios/${PORTFOLIO_ID}/projects`);
-            const q = query(projectsRef, orderBy("createdAt", "desc"));
-            
-            onSnapshot(q, (snapshot) => {
-                const projects = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                displayProjects(projects);
-            }, (error) => {
-                console.error("Failed to fetch projects:", error);
-            });
-        };
-
-        const displayProjects = (projects) => {
-            projectsList.innerHTML = '';
-            if (projects.length === 0) {
-                projectsList.innerHTML = '<p class="text-center text-gray-500 col-span-1 lg:col-span-2">No projects to display.</p>';
-                return;
-            }
-            projects.forEach(project => {
-                const card = document.createElement('div');
-                card.className = 'card p-8 flex flex-col justify-between';
-                card.innerHTML = `
-                    <div>
-                        <h3 class="text-3xl font-bold mb-2 text-gray-50">${project.title}</h3>
-                        <p class="text-gray-400 mb-4">${project.description}</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            ${JSON.parse(project.technologies).map(tech => `<span class="bg-[#333] text-gray-400 px-3 py-1 text-sm rounded-full">${tech}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <a href="${project.liveUrl}" target="_blank" class="text-white hover:underline font-semibold transition-colors">Live Demo &rarr;</a>
-                        <a href="${project.githubUrl}" target="_blank" class="text-white hover:underline font-semibold transition-colors">GitHub &rarr;</a>
-                    </div>
-                `;
-                projectsList.appendChild(card);
-            });
-        };
-
-        window.onload = () => {
-            initFirebase();
-        };
-    </script>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 min-h-screen">
-        <div class="bg-[#1a1a1a] p-8 flex flex-col justify-center items-center text-center md:items-start md:text-left">
-            <div class="max-w-xl md:pl-20">
-                <h1 class="text-5xl md:text-7xl font-bold text-gray-50 mb-4 tracking-tight">PortFolio</h1>
-                <p class="text-lg md:text-2xl font-normal text-gray-400 mb-8">
-                    Figma PortFolio Template
-                </p>
+    <div class="main-grid">
+        <div class="left-panel">
+            <div class="max-w-xl text-center md:text-left">
+                <h1 class="text-6xl md:text-8xl font-bold tracking-tight">
+                    <span class="text-blue-500">Gaurav's</span><br>Portfolio
+                </h1>
             </div>
         </div>
         
-        <div class="bg-[#2b2b2b] p-8 md:p-12 overflow-y-auto">
-            <header class="flex justify-end items-center mb-16">
-                <nav class="flex space-x-6 text-gray-400 font-medium">
-                    <a href="#home" class="hover:text-white transition-colors">Home</a>
-                    <a href="#about" class="hover:text-white transition-colors">About</a>
-                    <a href="#work" class="hover:text-white transition-colors">Work</a>
+        <div class="right-panel">
+            <header class="flex justify-between items-center mb-12">
+                <nav class="flex space-x-6 text-gray-500 font-medium text-sm">
+                    <a href="#hero" class="hover:text-black transition-colors">Home</a>
+                    <a href="#about" class="hover:text-black transition-colors">About</a>
+                    <a href="#experience" class="hover:text-black transition-colors">Experience</a>
+                    <a href="#projects" class="hover:text-black transition-colors">Projects</a>
+                    <a href="#contact" class="hover:text-black transition-colors">Contact</a>
                 </nav>
-                <a href="https://github.com" target="_blank" class="ml-6 text-gray-400 hover:text-white transition-colors text-2xl">
-                    <i class="fab fa-github"></i>
-                </a>
+                <div class="social-icons flex space-x-4">
+                    <a href="https://www.linkedin.com/in/gaurav-jain-6b56442bb" target="_blank" class="hover:text-black transition-colors text-xl">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/gauravrohinda" target="_blank" class="hover:text-black transition-colors text-xl">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
             </header>
+            
+            <section id="hero" class="mb-16">
+                <h2 class="text-4xl font-bold mb-4">Hi, I'm <span class="text-blue-500">Gaurav</span> Jain</h2>
+                <p class="text-lg font-light text-gray-600 mb-8">I design and build things.</p>
+                <a href="#" class="btn-primary text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Download Resume</a>
+            </section>
+            
+            <hr class="section-divider">
 
-            <section id="home" class="mb-20">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-                    <div class="col-span-2">
-                        <p class="text-gray-400 mb-2">Hello, I'm Gaurav,</p>
-                        <h2 id="name-heading" class="text-5xl md:text-6xl font-extrabold text-gray-50 leading-tight mb-4">
-                            Full Stack Developer
-                        </h2>
-                        <a id="download-resume-btn" href="#" target="_blank" class="text-orange-500 hover:text-orange-400 font-semibold transition-colors border-b-2 border-orange-500">Contact Me</a>
+            <section id="about" class="mb-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="w-full">
+                        <h3 class="font-semibold text-lg mb-2">About Me</h3>
+                        <p class="text-gray-600 leading-relaxed text-sm mb-4">
+                            I’m Gaurav Jain, a Computer Science student at Arya College of Engineering and IT (B.Tech 2023–2027), passionate about full-stack development, problem-solving, and building impactful digital solutions. With hands-on experience in technologies like the MERN stack, Firebase, Python, and real-time applications, I enjoy transforming ideas into practical, user-friendly projects.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed text-sm mb-4">
+                            Some of my works include a real-time quiz platform, an ambulance tracking system, a price tracker app, and interactive web applications like a dynamic Todo list and authentication-based apps.
+                        </p>
+                        <p class="text-gray-600 leading-relaxed text-sm">
+                            Beyond coding, I love exploring new cuisines and traveling, which inspire my creativity and problem-solving approach. My goal is to leverage technology to design innovative, user-focused solutions that improve everyday life and contribute to meaningful change.
+                        </p>
                     </div>
-                    <div class="col-span-1 flex justify-center lg:justify-end">
-                        <img id="profile-pic" src="https://placehold.co/300x300/333/d1d5db?text=Gaurav" class="w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-gray-700 object-cover" alt="Gaurav Jain">
+                    <div class="w-full flex justify-center md:justify-end">
+                        <img src="https://placehold.co/300x400/e5e5e5/white?text=Gaurav+Jain" alt="Gaurav Jain" class="w-full max-w-sm rounded-lg shadow-md">
                     </div>
                 </div>
             </section>
             
-            <section id="about" class="mb-20">
-                <h3 class="text-3xl font-bold text-gray-50 mb-4">about</h3>
-                <div class="h-1 w-24 bg-gray-600 mb-8"></div>
-                <p id="about-me" class="text-gray-400 leading-relaxed mb-12">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Amet vulputate tristique quam felis id phasellus dui orci vulputate consequat nulla proin. Id sit scelerisque neque, proin bibendum diam.
-                </p>
-                
-                <div id="skills-list" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <hr class="section-divider">
+
+            <section id="experience" class="mb-16">
+                <h3 class="font-semibold text-lg mb-4">Experience</h3>
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="font-semibold text-gray-900">Full-Stack Developer Intern</h4>
+                        <p class="text-sm text-gray-600">XYZ Tech Solutions - May 2023 - Present</p>
+                        <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                            <li>Developed and maintained web applications using React and Node.js.</li>
+                            <li>Collaborated with a team to implement new features and bug fixes.</li>
+                        </ul>
                     </div>
+                    <div>
+                        <h4 class="font-semibold text-gray-900">Web Development Freelancer</h4>
+                        <p class="text-sm text-gray-600">Self-Employed - Jan 2022 - Apr 2023</p>
+                        <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
+                            <li>Designed and built custom websites for small businesses and clients.</li>
+                            <li>Managed client communication and project timelines.</li>
+                        </ul>
+                    </div>
+                </div>
             </section>
 
-            <section id="work">
-                <h3 class="text-3xl font-bold text-gray-50 mb-4">My Projects</h3>
-                <div id="projects-list" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <hr class="section-divider">
+
+            <section id="projects" class="mb-16">
+                <h3 class="font-semibold text-lg mb-4">My Projects</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="project-card">
+                        <h4 class="font-bold text-lg mb-1">Ambulance Tracking & Traffic Optimization System</h4>
+                        <p class="text-gray-600 text-sm mb-2">A real-time system to track ambulances and optimize routes based on traffic conditions.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Real-time</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">GPS</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Node.js</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">MongoDB</span>
+                        </div>
+                        <div class="flex gap-4 text-sm text-gray-600">
+                            <a href="#" target="_blank" class="hover:underline">Live Demo &rarr;</a>
+                            <a href="#" target="_blank" class="hover:underline">GitHub &rarr;</a>
+                        </div>
                     </div>
+                    
+                    <div class="project-card">
+                        <h4 class="font-bold text-lg mb-1">Virtual Classroom with Real-Time Quizzes</h4>
+                        <p class="text-gray-600 text-sm mb-2">An interactive platform for live classes and real-time quizzes using modern web technologies.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">MERN Stack</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Socket.io</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Real-time</span>
+                        </div>
+                        <div class="flex gap-4 text-sm text-gray-600">
+                            <a href="#" target="_blank" class="hover:underline">Live Demo &rarr;</a>
+                            <a href="#" target="_blank" class="hover:underline">GitHub &rarr;</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h4 class="font-bold text-lg mb-1">Dynamic Todo App</h4>
+                        <p class="text-gray-600 text-sm mb-2">A responsive and user-friendly task management app with persistent data storage.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">MongoDB Atlas</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Tailwind CSS</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Express</span>
+                        </div>
+                        <div class="flex gap-4 text-sm text-gray-600">
+                            <a href="#" target="_blank" class="hover:underline">Live Demo &rarr;</a>
+                            <a href="#" target="_blank" class="hover:underline">GitHub &rarr;</a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h4 class="font-bold text-lg mb-1">Secrets – Authentication Web App</h4>
+                        <p class="text-gray-600 text-sm mb-2">A secure web application demonstrating user authentication and authorization best practices.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Express</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Node.js</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">MongoDB</span>
+                        </div>
+                        <div class="flex gap-4 text-sm text-gray-600">
+                            <a href="#" target="_blank" class="hover:underline">Live Demo &rarr;</a>
+                            <a href="#" target="_blank" class="hover:underline">GitHub &rarr;</a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <h4 class="font-bold text-lg mb-1">Price Tracker App</h4>
+                        <p class="text-gray-600 text-sm mb-2">An application to monitor product prices from various websites and notify users of changes.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Python</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">BeautifulSoup</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">SQLite</span>
+                            <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Tkinter</span>
+                        </div>
+                        <div class="flex gap-4 text-sm text-gray-600">
+                            <a href="#" target="_blank" class="hover:underline">Live Demo &rarr;</a>
+                            <a href="#" target="_blank" class="hover:underline">GitHub &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="section-divider">
+
+            <section id="contact" class="mb-16">
+                <h3 class="font-semibold text-lg mb-4">Contact</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-100 p-8">
+                        <h4 class="font-bold text-2xl mb-4">Get in Touch</h4>
+                        <p class="text-gray-600 mb-6">I'm currently open to new opportunities. Feel free to contact me for collaborations or inquiries.</p>
+                        <div class="space-y-2">
+                            <p class="font-medium text-sm">Email</p>
+                            <a href="mailto:your.email@example.com" class="text-sm text-blue-500 hover:underline">your.email@example.com</a>
+                        </div>
+                    </div>
+                    <form id="contact-form" action="#" method="POST" class="bg-white p-8 border border-gray-200 space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-600">Name</label>
+                            <input type="text" id="name" name="name" class="form-input">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+                            <input type="email" id="email" name="email" class="form-input">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-600">Message</label>
+                            <textarea id="message" name="message" rows="4" class="form-textarea"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Send Message</button>
+                    </form>
+                </div>
             </section>
         </div>
     </div>
+    <script>
+    document.getElementById('contact-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const jsonData = {};
+        formData.forEach((value, key) => { jsonData[key] = value; });
+
+        try {
+            const response = await fetch('https://[your-vercel-app].vercel.app/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            });
+
+            if (response.ok) {
+                alert('Message sent successfully!');
+                form.reset();
+            } else {
+                alert('Failed to send message. Please try again later.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    });
+</script>
 </body>
 </html>
