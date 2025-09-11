@@ -67,6 +67,8 @@
             border-color: #a0aec0;
         }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-900">
 
@@ -231,74 +233,86 @@
 
             <hr class="section-divider">
 
-        <section id="contact" class="mb-16">
-    <h3 class="font-semibold text-lg mb-4">Contact</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-gray-100 p-8">
-            <h4 class="font-bold text-2xl mb-4">Get in Touch</h4>
-            <p class="text-gray-600 mb-6">I'm currently open to new opportunities. Feel free to contact me for collaborations or inquiries.</p>
-            <div class="space-y-2">
-                <p class="font-medium text-sm">Email</p>
-                <a href="mailto:your.email@example.com" class="text-sm text-blue-500 hover:underline">gauravrohinda0@gmail.com</a>
-            </div>
+            <section id="contact" class="mb-16">
+                <h3 class="font-semibold text-lg mb-4">Contact</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-100 p-8">
+                        <h4 class="font-bold text-2xl mb-4">Get in Touch</h4>
+                        <p class="text-gray-600 mb-6">I'm currently open to new opportunities. Feel free to contact me for collaborations or inquiries.</p>
+                        <div class="space-y-2">
+                            <p class="font-medium text-sm">Email</p>
+                            <a href="mailto:your.email@example.com" class="text-sm text-blue-500 hover:underline">gauravrohinda0@gmail.com</a>
+                        </div>
+                    </div>
+                    
+                    <form id="contact-firebase-form" class="bg-white p-8 border border-gray-200 space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-600">Name</label>
+                            <input type="text" id="name" name="name" class="form-input">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+                            <input type="email" id="email" name="email" class="form-input">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-600">Message</label>
+                            <textarea id="message" name="message" rows="4" class="form-textarea"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Send Message</button>
+                    </form>
+                    <div id="status-message" class="mt-4 text-sm font-medium"></div>
+                </div>
+            </section>
         </div>
-        
-        <form action="https://formspree.io/f/mpwjbgyr" method="POST" class="bg-white p-8 border border-gray-200 space-y-4">
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-600">Name</label>
-                <input type="text" id="name" name="name" class="form-input">
-            </div>
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
-                <input type="email" id="email" name="email" class="form-input">
-            </div>
-           <div>
-    <label for="message" class="block text-sm font-medium text-gray-600">Message</label>
-    <textarea id="message" name="message" rows="4" class="form-textarea"></textarea>
-</div>
-<p id="my-form-status" class="text-sm font-medium text-green-600"></p>
-<button type="submit" class="btn-primary text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Send Message</button>
-        </form>
-        
     </div>
-</section>
-        </div>
-    </div>
+
     <script>
-    const form = document.getElementById('contact-form');
-    
-    async function handleSubmit(event) {
-        event.preventDefault(); // This stops the redirect
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC0THL3rQUy2BalrI4cLYHJbbaDKvYq24g",
+            authDomain: "protfolio-9e108.firebaseapp.com",
+            projectId: "protfolio-9e108",
+            storageBucket: "protfolio-9e108.firebasestorage.app",
+            messagingSenderId: "676400124635",
+            appId: "1:676400124635:web:24384cad2b1887514c72fe",
+            measurementId: "G-MKYTYJ1GJJ"
+        };
         
-        const status = document.getElementById("my-form-status");
-        const data = new FormData(event.target);
-        
-        try {
-            const response = await fetch(event.target.action, {
-                method: form.method,
-                body: data,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            
-            if (response.ok) {
-                status.innerHTML = "Thanks for your submission!";
-                form.reset(); // This clears the form fields
-            } else {
-                const responseData = await response.json();
-                if (responseData.hasOwnProperty('errors')) {
-                    status.innerHTML = responseData.errors.map(error => error.message).join(", ");
-                } else {
-                    status.innerHTML = "Oops! There was a problem submitting your form";
-                }
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        const contactForm = document.getElementById('contact-firebase-form');
+        const statusMessage = document.getElementById('status-message');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = contactForm.name.value;
+            const email = contactForm.email.value;
+            const message = contactForm.message.value;
+
+            statusMessage.textContent = 'Sending message...';
+            statusMessage.className = 'mt-4 text-sm font-medium text-blue-500';
+
+            try {
+                // Add a new document to the "contacts" collection
+                await db.collection("contacts").add({
+                    name: name,
+                    email: email,
+                    message: message,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                statusMessage.textContent = 'Message sent successfully! Thank you. 😊';
+                statusMessage.className = 'mt-4 text-sm font-medium text-green-600';
+                contactForm.reset();
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                statusMessage.textContent = 'Oops! Something went wrong. Please try again.';
+                statusMessage.className = 'mt-4 text-sm font-medium text-red-600';
             }
-        } catch (error) {
-            status.innerHTML = "Oops! There was a problem submitting your form";
-        }
-    }
-    
-    form.addEventListener("submit", handleSubmit);
-</script>
+        });
+    </script>
 </body>
 </html>
