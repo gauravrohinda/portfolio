@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +19,19 @@
             display: grid;
             grid-template-columns: 1fr 2fr;
             min-height: 100vh;
+        }
+        @media (max-width: 1023px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .left-panel {
+                position: static;
+                height: auto;
+                padding: 2rem;
+            }
+            .right-panel {
+                padding: 2rem;
+            }
         }
         .left-panel {
             background-color: #ffffff;
@@ -43,16 +56,15 @@
             margin-top: 2rem;
             margin-bottom: 2rem;
         }
-        .about-section {
-            display: flex;
-            gap: 2rem;
-        }
         .project-card {
             border: 1px solid #e5e5e5;
             padding: 1.5rem;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            cursor: pointer;
         }
-        .social-icons a {
-            color: #1a1a1a;
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
         .form-input, .form-textarea {
             width: 100%;
@@ -61,6 +73,7 @@
             background-color: transparent;
             font-size: 0.875rem;
             margin-top: 0.25rem;
+            transition: border-color 0.2s ease-in-out;
         }
         .form-input:focus, .form-textarea:focus {
             outline: none;
@@ -82,8 +95,8 @@
         </div>
         
         <div class="right-panel">
-            <header class="flex justify-between items-center mb-12">
-                <nav class="flex space-x-6 text-gray-500 font-medium text-sm">
+            <header class="flex justify-between items-center mb-12 flex-wrap">
+                <nav class="flex space-x-4 md:space-x-6 text-gray-500 font-medium text-sm mb-4 md:mb-0">
                     <a href="#hero" class="hover:text-black transition-colors">Home</a>
                     <a href="#about" class="hover:text-black transition-colors">About</a>
                     <a href="#experience" class="hover:text-black transition-colors">Experience</a>
@@ -147,7 +160,6 @@
                         <ul class="list-disc list-inside text-sm text-gray-600 mt-2">
                             <li>Designed and built custom websites for small businesses and clients.</li>
                             <li>Managed client communication and project timelines.</li>
-                        <li>Managed client communication and project timelines.</li>
                         </ul>
                     </div>
                 </div>
@@ -249,15 +261,15 @@
                     <form id="contact-firebase-form" class="bg-white p-8 border border-gray-200 space-y-4">
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-600">Name</label>
-                            <input type="text" id="name" name="name" class="form-input">
+                            <input type="text" id="name" name="name" class="form-input" required>
                         </div>
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
-                            <input type="email" id="email" name="email" class="form-input">
+                            <input type="email" id="email" name="email" class="form-input" required>
                         </div>
                         <div>
                             <label for="message" class="block text-sm font-medium text-gray-600">Message</label>
-                            <textarea id="message" name="message" rows="4" class="form-textarea"></textarea>
+                            <textarea id="message" name="message" rows="4" class="form-textarea" required></textarea>
                         </div>
                         <button type="submit" class="btn-primary text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Send Message</button>
                     </form>
@@ -268,7 +280,6 @@
     </div>
 
     <script>
-        // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC0THL3rQUy2BalrI4cLYHJbbaDKvYq24g",
             authDomain: "protfolio-9e108.firebaseapp.com",
@@ -279,7 +290,6 @@
             measurementId: "G-MKYTYJ1GJJ"
         };
         
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
