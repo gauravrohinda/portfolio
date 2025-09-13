@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gaurav Jain - Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,87 +16,23 @@
             background-color: #f7f7f7;
             color: #1a1a1a;
         }
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            min-height: 100vh;
-        }
-        @media (max-width: 1023px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-            .left-panel {
-                position: static;
-                height: auto;
-                padding: 2rem;
-            }
-            .right-panel {
-                padding: 2rem;
-            }
-        }
-        .left-panel {
-            background-color: #ffffff;
-            color: #1a1a1a;
-            padding: 4rem;
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .right-panel {
-            background-color: #ffffff;
-            padding: 4rem;
-            overflow-y: auto;
-        }
-        .section-divider {
-            border: none;
-            height: 1px;
-            background-color: #e5e5e5;
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-        }
-        .project-card {
-            border: 1px solid #e5e5e5;
-            padding: 1.5rem;
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-            cursor: pointer;
-        }
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-        .form-input, .form-textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #e5e5e5;
-            background-color: transparent;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-            transition: border-color 0.2s ease-in-out;
-        }
-        .form-input:focus, .form-textarea:focus {
-            outline: none;
-            border-color: #a0aec0;
-        }
     </style>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-900">
 
-    <div class="main-grid">
-        <div class="left-panel">
-            <div class="max-w-xl text-center md:text-left">
+    <div class="grid lg:grid-cols-3 min-h-screen">
+        <div class="bg-white text-gray-900 p-8 lg:p-16 lg:col-span-1 lg:sticky lg:top-0 lg:h-screen lg:flex lg:items-center lg:justify-center">
+            <div class="max-w-xl text-center lg:text-left">
                 <h1 class="text-6xl md:text-8xl font-bold tracking-tight">
                     <span class="text-blue-500">Gaurav's</span><br>Portfolio
                 </h1>
             </div>
         </div>
         
-        <div class="right-panel">
-            <header class="flex justify-between items-center mb-12 flex-wrap">
+        <div class="bg-white p-8 lg:p-16 lg:col-span-2 overflow-y-auto">
+            <header class="flex flex-col md:flex-row justify-between items-center mb-12 flex-wrap">
                 <nav class="flex space-x-4 md:space-x-6 text-gray-500 font-medium text-sm mb-4 md:mb-0">
                     <a href="#hero" class="hover:text-black transition-colors">Home</a>
                     <a href="#about" class="hover:text-black transition-colors">About</a>
@@ -116,10 +53,10 @@
             <section id="hero" class="mb-16">
                 <h2 class="text-4xl font-bold mb-4">Hi, I'm <span class="text-blue-500">Gaurav</span> Jain</h2>
                 <p class="text-lg font-light text-gray-600 mb-8">I design and build things.</p>
-                <a href="Gaurav_Jain_.pdf" class="btn-primary text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Download Resume</a>
+                <a href="Gaurav_Jain_.pdf" class="text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Download Resume</a>
             </section>
             
-            <hr class="section-divider">
+            <hr class="border-t border-gray-200 mt-8 mb-8">
 
             <section id="about" class="mb-16">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -141,7 +78,7 @@
                 </div>
             </section>
             
-            <hr class="section-divider">
+            <hr class="border-t border-gray-200 mt-8 mb-8">
 
             <section id="experience" class="mb-16">
                 <h3 class="font-semibold text-lg mb-4">Experience</h3>
@@ -165,12 +102,12 @@
                 </div>
             </section>
 
-            <hr class="section-divider">
+            <hr class="border-t border-gray-200 mt-8 mb-8">
 
             <section id="projects" class="mb-16">
                 <h3 class="font-semibold text-lg mb-4">My Projects</h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="project-card">
+                    <div class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
                         <h4 class="font-bold text-lg mb-1">Weather check</h4>
                         <p class="text-gray-600 text-sm mb-2">A real-time weather check</p>
                         <div class="flex flex-wrap gap-2 mb-4">
@@ -185,7 +122,7 @@
                         </div>
                     </div>
                     
-                    <div class="project-card">
+                    <div class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
                         <h4 class="font-bold text-lg mb-1">Virtual Classroom with Real-Time Quizzes</h4>
                         <p class="text-gray-600 text-sm mb-2">An interactive platform for live classes and real-time quizzes using modern web technologies.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
@@ -199,7 +136,7 @@
                         </div>
                     </div>
 
-                    <div class="project-card">
+                    <div class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
                         <h4 class="font-bold text-lg mb-1">Keeper-App</h4>
                         <p class="text-gray-600 text-sm mb-2">A responsive and user-friendly task management app with persistent data storage.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
@@ -213,7 +150,7 @@
                         </div>
                     </div>
 
-                    <div class="project-card">
+                    <div class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
                         <h4 class="font-bold text-lg mb-1">Secrets – Authentication Web App</h4>
                         <p class="text-gray-600 text-sm mb-2">A secure web application demonstrating user authentication and authorization best practices.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
@@ -227,7 +164,7 @@
                         </div>
                     </div>
                     
-                    <div class="project-card">
+                    <div class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
                         <h4 class="font-bold text-lg mb-1">Price Tracker App</h4>
                         <p class="text-gray-600 text-sm mb-2">An application to monitor product prices from various websites and notify users of changes.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
@@ -244,7 +181,7 @@
                 </div>
             </section>
 
-            <hr class="section-divider">
+            <hr class="border-t border-gray-200 mt-8 mb-8">
 
             <section id="contact" class="mb-16">
                 <h3 class="font-semibold text-lg mb-4">Contact</h3>
@@ -261,17 +198,17 @@
                     <form id="contact-firebase-form" class="bg-white p-8 border border-gray-200 space-y-4">
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-600">Name</label>
-                            <input type="text" id="name" name="name" class="form-input" required>
+                            <input type="text" id="name" name="name" class="w-full p-3 border border-gray-200 bg-transparent text-sm mt-1 focus:outline-none focus:border-blue-500" required>
                         </div>
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
-                            <input type="email" id="email" name="email" class="form-input" required>
+                            <input type="email" id="email" name="email" class="w-full p-3 border border-gray-200 bg-transparent text-sm mt-1 focus:outline-none focus:border-blue-500" required>
                         </div>
                         <div>
                             <label for="message" class="block text-sm font-medium text-gray-600">Message</label>
-                            <textarea id="message" name="message" rows="4" class="form-textarea" required></textarea>
+                            <textarea id="message" name="message" rows="4" class="w-full p-3 border border-gray-200 bg-transparent text-sm mt-1 focus:outline-none focus:border-blue-500" required></textarea>
                         </div>
-                        <button type="submit" class="btn-primary text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Send Message</button>
+                        <button type="submit" class="text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Send Message</button>
                     </form>
                 </div>
                 <div id="status-message" class="mt-4 text-sm font-medium"></div>
