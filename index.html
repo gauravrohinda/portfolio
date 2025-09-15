@@ -17,8 +17,8 @@
             color: #1a1a1a;
         }
     </style>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 </head>
 <body class="bg-gray-100 text-gray-900">
 
@@ -219,6 +219,7 @@
     </div>
 
     <script>
+        // Your Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyC0THL3rQUy2BalrI4cLYHJbbaDKvYq24g",
             authDomain: "portfolio-9e108.firebaseapp.com",
@@ -246,6 +247,7 @@
             statusMessage.className = 'mt-4 text-sm font-medium text-blue-500';
 
             try {
+                // Wait for the Firebase operation to complete
                 await db.collection("contacts").add({
                     name: name,
                     email: email,
