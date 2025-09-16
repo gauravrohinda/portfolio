@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,27 +11,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7f7f7;
-            color: #1a1a1a;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 </head>
+
 <body class="bg-gray-100 text-gray-900">
 
     <div class="grid lg:grid-cols-3 min-h-screen">
-        <div class="bg-white text-gray-900 p-8 lg:p-16 lg:col-span-1 lg:sticky lg:top-0 lg:h-screen lg:flex lg:items-center lg:justify-center">
+        <div
+            class="bg-white text-gray-900 p-8 lg:p-16 lg:col-span-1 lg:sticky lg:top-0 lg:h-screen lg:flex lg:items-center lg:justify-center">
             <div class="max-w-xl text-center lg:text-left">
                 <h1 class="text-6xl md:text-8xl font-bold tracking-tight">
                     <span class="text-blue-500">Gaurav's</span><br>Portfolio
                 </h1>
             </div>
         </div>
-        
+
         <div class="bg-white p-8 lg:p-16 lg:col-span-2 overflow-y-auto">
             <header class="flex flex-col md:flex-row justify-between items-center mb-12 flex-wrap">
                 <nav class="flex space-x-4 md:space-x-6 text-gray-500 font-medium text-sm mb-4 md:mb-0">
@@ -41,21 +38,25 @@
                     <a href="#contact" class="hover:text-black transition-colors">Contact</a>
                 </nav>
                 <div class="social-icons flex space-x-4">
-                    <a href="https://www.linkedin.com/in/gaurav-jain-6b56442bb" target="_blank" class="hover:text-black transition-colors text-xl">
+                    <a href="https://www.linkedin.com/in/gaurav-jain-6b56442bb" target="_blank"
+                        class="hover:text-black transition-colors text-xl">
                         <i class="fab fa-linkedin"></i>
                     </a>
-                    <a href="https://github.com/gauravrohinda" target="_blank" class="hover:text-black transition-colors text-xl">
+                    <a href="https://github.com/gauravrohinda" target="_blank"
+                        class="hover:text-black transition-colors text-xl">
                         <i class="fab fa-github"></i>
                     </a>
                 </div>
             </header>
-            
+
             <section id="hero" class="mb-16">
                 <h2 class="text-4xl font-bold mb-4">Hi, I'm <span class="text-blue-500">Gaurav</span> Jain</h2>
                 <p class="text-lg font-light text-gray-600 mb-8">I design and build things.</p>
-                <a href="Gaurav_Jain_Resume.pdf" class="text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Download Resume</a>
+                <a href="Gaurav_Jain_Resume.pdf"
+                    class="text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Download
+                    Resume</a>
             </section>
-            
+
             <hr class="border-t border-gray-200 mt-8 mb-8">
 
             <section id="about" class="mb-16">
@@ -63,13 +64,21 @@
                     <div class="w-full">
                         <h3 class="font-semibold text-lg mb-2">About Me</h3>
                         <p class="text-gray-600 leading-relaxed text-sm mb-4">
-                            I’m Gaurav Jain, a Computer Science student at Arya College of Engineering and IT (B.Tech 2023–2027), passionate about full-stack development, problem-solving, and building impactful digital solutions. With hands-on experience in technologies like the MERN stack, Firebase, Python, and real-time applications, I enjoy transforming ideas into practical, user-friendly projects.
+                            I’m Gaurav Jain, a Computer Science student at Arya College of Engineering and IT (B.Tech
+                            2023–2027), passionate about full-stack development, problem-solving, and building impactful
+                            digital solutions. With hands-on experience in technologies like the MERN stack, Firebase,
+                            Python, and real-time applications, I enjoy transforming ideas into practical, user-friendly
+                            projects.
                         </p>
                         <p class="text-gray-600 leading-relaxed text-sm mb-4">
-                            Some of my works include a real-time quiz platform, an ambulance tracking system, a price tracker app, and interactive web applications like a dynamic Todo list and authentication-based apps.
+                            Some of my works include a real-time quiz platform, an ambulance tracking system, a price
+                            tracker app, and interactive web applications like a dynamic Todo list and
+                            authentication-based apps.
                         </p>
                         <p class="text-gray-600 leading-relaxed text-sm">
-                            Beyond coding, I love exploring new cuisines and traveling, which inspire my creativity and problem-solving approach. My goal is to leverage technology to design innovative, user-focused solutions that improve everyday life and contribute to meaningful change.
+                            Beyond coding, I love exploring new cuisines and traveling, which inspire my creativity and
+                            problem-solving approach. My goal is to leverage technology to design innovative,
+                            user-focused solutions that improve everyday life and contribute to meaningful change.
                         </p>
                     </div>
                     <div class="w-full flex justify-center md:justify-end">
@@ -77,7 +86,7 @@
                     </div>
                 </div>
             </section>
-            
+
             <hr class="border-t border-gray-200 mt-8 mb-8">
 
             <section id="experience" class="mb-16">
@@ -109,7 +118,8 @@
             <section id="projects" class="mb-16">
                 <h3 class="font-semibold text-lg mb-4">My Projects</h3>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
+                    <div
+                        class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
                         <h4 class="font-bold text-lg mb-1">Weather check</h4>
                         <p class="text-gray-600 text-sm mb-2">A real-time weather check</p>
                         <div class="flex flex-wrap gap-2 mb-4">
@@ -119,14 +129,18 @@
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Firebase</span>
                         </div>
                         <div class="flex gap-4 text-sm text-gray-600">
-                            <a href="https://gauravwhether.vercel.app/" target="_blank" class="hover:underline">Live Demo &rarr;</a>
-                            <a href="https://github.com/gauravrohinda/whether.git" target="_blank" class="hover:underline">GitHub &rarr;</a>
+                            <a href="https://gauravwhether.vercel.app/" target="_blank" class="hover:underline">Live
+                                Demo &rarr;</a>
+                            <a href="https://github.com/gauravrohinda/whether.git" target="_blank"
+                                class="hover:underline">GitHub &rarr;</a>
                         </div>
                     </div>
-                    
-                    <div class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
+
+                    <div
+                        class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
                         <h4 class="font-bold text-lg mb-1">Virtual Classroom with Real-Time Quizzes</h4>
-                        <p class="text-gray-600 text-sm mb-2">An interactive platform for live classes and real-time quizzes using modern web technologies.</p>
+                        <p class="text-gray-600 text-sm mb-2">An interactive platform for live classes and real-time
+                            quizzes using modern web technologies.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">MERN Stack</span>
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Socket.io</span>
@@ -138,23 +152,29 @@
                         </div>
                     </div>
 
-                    <div class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
+                    <div
+                        class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
                         <h4 class="font-bold text-lg mb-1">Keeper-App</h4>
-                        <p class="text-gray-600 text-sm mb-2">A responsive and user-friendly task management app with persistent data storage.</p>
+                        <p class="text-gray-600 text-sm mb-2">A responsive and user-friendly task management app with
+                            persistent data storage.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">MongoDB Atlas</span>
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Tailwind CSS</span>
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Express</span>
                         </div>
                         <div class="flex gap-4 text-sm text-gray-600">
-                            <a href="https://keeper-apps.onrender.com/" target="_blank" class="hover:underline">Live Demo &rarr;</a>
-                            <a href="https://github.com/gauravrohinda/Keeper-Apps.git" target="_blank" class="hover:underline">GitHub &rarr;</a>
+                            <a href="https://keeper-apps.onrender.com/" target="_blank" class="hover:underline">Live
+                                Demo &rarr;</a>
+                            <a href="https://github.com/gauravrohinda/Keeper-Apps.git" target="_blank"
+                                class="hover:underline">GitHub &rarr;</a>
                         </div>
                     </div>
 
-                    <div class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
+                    <div
+                        class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
                         <h4 class="font-bold text-lg mb-1">Secrets – Authentication Web App</h4>
-                        <p class="text-gray-600 text-sm mb-2">A secure web application demonstrating user authentication and authorization best practices.</p>
+                        <p class="text-gray-600 text-sm mb-2">A secure web application demonstrating user authentication
+                            and authorization best practices.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Express</span>
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Node.js</span>
@@ -165,10 +185,12 @@
                             <a href="#" target="_blank" class="hover:underline">GitHub &rarr;</a>
                         </div>
                     </div>
-                    
-                    <div class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
+
+                    <div
+                        class="border border-gray-200 p-6 rounded-md hover:transform hover:-translate-y-1 hover:shadow-md transition-transform duration-200 cursor-pointer">
                         <h4 class="font-bold text-lg mb-1">Amazon Price Tracker App</h4>
-                        <p class="text-gray-600 text-sm mb-2">An application to monitor product prices from various websites and notify users of changes.</p>
+                        <p class="text-gray-600 text-sm mb-2">An application to monitor product prices from various
+                            websites and notify users of changes.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Python</span>
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">BeautifulSoup</span>
@@ -176,8 +198,10 @@
                             <span class="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded-full">Tkinter</span>
                         </div>
                         <div class="flex gap-4 text-sm text-gray-600">
-                            <a href="https://github.com/gauravrohinda/trackprices/releases/download/v1/price_tracker_bot.exe" target="_blank" class="hover:underline">Live Demo &rarr;</a>
-                            <a href="https://github.com/gauravrohinda/trackprices.git" target="_blank" class="hover:underline">GitHub &rarr;</a>
+                            <a href="https://github.com/gauravrohinda/trackprices/releases/download/v1/price_tracker_bot.exe"
+                                target="_blank" class="hover:underline">Live Demo &rarr;</a>
+                            <a href="https://github.com/gauravrohinda/trackprices.git" target="_blank"
+                                class="hover:underline">GitHub &rarr;</a>
                         </div>
                     </div>
                 </div>
@@ -190,27 +214,37 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="bg-gray-100 p-8">
                         <h4 class="font-bold text-2xl mb-4">Get in Touch</h4>
-                        <p class="text-gray-600 mb-6">I'm currently open to new opportunities. Feel free to contact me for collaborations or inquiries.</p>
+                        <p class="text-gray-600 mb-6">I'm currently open to new opportunities. Feel free to contact me
+                            for collaborations or inquiries.</p>
                         <div class="space-y-2">
                             <p class="font-medium text-sm">Email</p>
-                            <a href="mailto:gauravrohinda0@gmail.com" class="text-sm text-blue-500 hover:underline">gauravrohinda0@gmail.com</a>
+                            <a href="mailto:gauravrohinda0@gmail.com"
+                                class="text-sm text-blue-500 hover:underline">gauravrohinda0@gmail.com</a>
                         </div>
                     </div>
-                    
+
                     <form id="contact-firebase-form" class="bg-white p-8 border border-gray-200 space-y-4">
                         <div>
                             <label for="name" class="block text-sm font-medium text-gray-600">Name</label>
-                            <input type="text" id="name" name="name" class="w-full p-3 border border-gray-200 bg-transparent text-sm mt-1 focus:outline-none focus:border-blue-500" required>
+                            <input type="text" id="name" name="name"
+                                class="w-full p-3 border border-gray-200 bg-transparent text-sm mt-1 focus:outline-none focus:border-blue-500"
+                                required>
                         </div>
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
-                            <input type="email" id="email" name="email" class="w-full p-3 border border-gray-200 bg-transparent text-sm mt-1 focus:outline-none focus:border-blue-500" required>
+                            <input type="email" id="email" name="email"
+                                class="w-full p-3 border border-gray-200 bg-transparent text-sm mt-1 focus:outline-none focus:border-blue-500"
+                                required>
                         </div>
                         <div>
                             <label for="message" class="block text-sm font-medium text-gray-600">Message</label>
-                            <textarea id="message" name="message" rows="4" class="w-full p-3 border border-gray-200 bg-transparent text-sm mt-1 focus:outline-none focus:border-blue-500" required></textarea>
+                            <textarea id="message" name="message" rows="4"
+                                class="w-full p-3 border border-gray-200 bg-transparent text-sm mt-1 focus:outline-none focus:border-blue-500"
+                                required></textarea>
                         </div>
-                        <button type="submit" class="text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Send Message</button>
+                        <button type="submit"
+                            class="text-sm font-semibold border border-black px-4 py-2 rounded-full hover:bg-black hover:text-white transition-colors">Send
+                            Message</button>
                     </form>
                 </div>
                 <div id="status-message" class="mt-4 text-sm font-medium"></div>
@@ -218,53 +252,7 @@
         </div>
     </div>
 
-    <script>
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyC0THL3rQUy2BalrI4cLYHJbbaDKvYq24g",
-  authDomain: "protfolio-9e108.firebaseapp.com",
-  databaseURL: "https://protfolio-9e108-default-rtdb.firebaseio.com",
-  projectId: "protfolio-9e108",
-  storageBucket: "protfolio-9e108.firebasestorage.app",
-  messagingSenderId: "676400124635",
-  appId: "1:676400124635:web:24384cad2b1887514c72fe",
-  measurementId: "G-MKYTYJ1GJJ"
-};
-        
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        const contactForm = document.getElementById('contact-firebase-form');
-        const statusMessage = document.getElementById('status-message');
-
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const name = contactForm.name.value;
-            const email = contactForm.email.value;
-            const message = contactForm.message.value;
-
-            statusMessage.textContent = 'Sending message...';
-            statusMessage.className = 'mt-4 text-sm font-medium text-blue-500';
-
-            try {
-                // Wait for the Firebase operation to complete
-                await db.collection("contacts").add({
-                    name: name,
-                    email: email,
-                    message: message,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                
-                statusMessage.textContent = 'Message sent successfully! Thank you. 😊';
-                statusMessage.className = 'mt-4 text-sm font-medium text-green-600';
-                contactForm.reset();
-            } catch (error) {
-                console.error("Error adding document: ", error);
-                statusMessage.textContent = 'Oops! Something went wrong. Please try again.';
-                statusMessage.className = 'mt-4 text-sm font-medium text-red-600';
-            }
-        });
-    </script>
+    <script src="main.js"></script>
 </body>
+
 </html>
